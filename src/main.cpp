@@ -5,6 +5,8 @@ int main() {
     std::cout << std::endl << "***** OPEN ADDRESS HASHING *****" << std::endl;
     HashTable table(8);
 
+    table.search(50);
+
     std::cout << std::endl << "////////////////////////////////////////////////" << std::endl;
 
     std::cout << std::endl << "2, 11, 5, 10, 3, 9 are inserted:" << std::endl;

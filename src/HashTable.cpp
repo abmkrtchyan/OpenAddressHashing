@@ -19,21 +19,19 @@ HashTable::~HashTable() {
 
 bool HashTable::search(int key) const {
     auto firstPosition = (h1(key)) % size;
-    auto lastPosition = firstPosition;
     auto step = (h2(key)) % size;
-    Node *currentSlot = table + lastPosition;
+    auto currentPosition = firstPosition;
     while (true) {
-        if (currentSlot->status == FREE) {
-            return false;
-        }
-        if (currentSlot->status == OCCUPIED && currentSlot->key == key) {
+        if (table[currentPosition].status == OCCUPIED && table[currentPosition].key == key) {
             return true;
         }
-        lastPosition = (lastPosition + step) % size;
-        if (lastPosition == firstPosition) {
+        if (table[currentPosition].status == FREE) {
             return false;
         }
-        currentSlot = table + lastPosition;
+        currentPosition = (currentPosition + step) % size;
+        if (currentPosition == firstPosition) {
+            return false;
+        }
     }
 }
 
@@ -41,32 +39,28 @@ void HashTable::insert(int key) {
     if (search(key)) {
         return;
     }
-    auto lastPosition = (h1(key)) % size;
+    auto currentPosition = (h1(key)) % size;
     auto step = (h2(key)) % size;
-    Node *currentSlot = table + lastPosition;
-    while (currentSlot->status == OCCUPIED) {
-        lastPosition = (lastPosition + step) % size;
-        currentSlot = table + lastPosition;
+    while (table[currentPosition].status == OCCUPIED) {
+        currentPosition = (currentPosition + step) % size;
     }
-    currentSlot->status = OCCUPIED;
-    currentSlot->key = key;
+    table[currentPosition].status = OCCUPIED;
+    table[currentPosition].key = key;
 }
 
 void HashTable::remove(int key) {
     auto firstPosition = (h1(key)) % size;
-    auto lastPosition = firstPosition;
     auto step = (h2(key)) % size;
-    Node *currentSlot = table + lastPosition;
+    auto currentPosition = firstPosition;
 
     while (true) {
-        if (currentSlot->status == OCCUPIED && currentSlot->key == key) {
+        if (table[currentPosition].status == OCCUPIED && table[currentPosition].key == key) {
             break;
         }
-        lastPosition = (lastPosition + step) % size;
-        currentSlot = table + lastPosition;
+        currentPosition = (currentPosition + step) % size;
     }
 
-    currentSlot->status = DELETED;
+    table[currentPosition].status = DELETED;
 }
 
 void HashTable::print() const {
