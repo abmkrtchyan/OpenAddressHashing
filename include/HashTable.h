@@ -6,12 +6,6 @@ enum Status {
     FREE, OCCUPIED, DELETED
 };
 
-struct Node {
-    int key;
-    Status status;
-
-    Node(int key = 0, Status status = FREE) : key(key), status(status) {}
-};
 
 static size_t h1(int key) {
     return key * key + 1;
@@ -22,6 +16,13 @@ static size_t h2(int key) {
 }
 
 class HashTable {
+
+    struct Node {
+        int key;
+        Status status;
+
+        Node(int key = 0, Status status = FREE) : key(key), status(status) {}
+    };
 private:
     Node *table;
     size_t size;
